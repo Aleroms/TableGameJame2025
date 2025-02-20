@@ -3,7 +3,13 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - blockSpawner
+  - bridge
+  - rectangle
+  - equilateral
+  - rightTriangle
+  - scale
   layers:
   - Default
   - TransparentFX

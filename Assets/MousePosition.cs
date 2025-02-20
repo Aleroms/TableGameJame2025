@@ -10,12 +10,6 @@ public class MousePosition : MonoBehaviour
     [SerializeField] private Transform boundaryLeft;
     [SerializeField] private Transform boundaryRight;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
     // Update is called once per frame
     void Update()
     {

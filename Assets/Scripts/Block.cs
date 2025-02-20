@@ -4,12 +4,19 @@ using UnityEngine;
 public class Block : MonoBehaviour
 {
     //DONT CHANGE BLOCKTYPE DURING RUNTIME
+    // keyword static prevents the type from showing in the inspector
     private enum BlockType { RIGHTTRI, EQTRI, RECT, BRIDGE }
-    [SerializeField] private static BlockType type;
     private enum BlockWeightLevel { Level1, Level2, Level3, Level4 }
+    [SerializeField] private BlockType type;
     [SerializeField] private BlockWeightLevel weight;
+
+
     [SerializeField] private int BlockWeight; 
+
+
     [SerializeField] private bool CanCombine = true; 
+
+    // defines the block combination progression
     [SerializeField] private Sprite[] BlockSprites;
     [SerializeField] private Sprite CurrentSprite;
     private SpriteRenderer sp; 
@@ -26,31 +33,27 @@ public class Block : MonoBehaviour
         {
             weight = BlockWeightLevel.Level2;
         }
-        if(sp = GetComponent<SpriteRenderer>())
+        if (sp = GetComponent<SpriteRenderer>())
         {
             ChangeSprite();
         }
+        // i am not sure what this means ^
+        // maybe you can help me understand
+
     }
 
     private void ChangeSprite()
     {
+        // a better way is to create a hash and map the value
+        var hashmap = new Dictionary<BlockWeightLevel, Sprite>();
+        hashmap.Add(BlockWeightLevel.Level1, BlockSprites[0]);
+        hashmap.Add(BlockWeightLevel.Level2, BlockSprites[1]);
+        hashmap.Add(BlockWeightLevel.Level3, BlockSprites[2]);
+        hashmap.Add(BlockWeightLevel.Level4 , BlockSprites[3]);
+
         //Change CurrentSprite component, and update renderer to match 
-        if(weight == BlockWeightLevel.Level1)
-        {
-            CurrentSprite = BlockSprites[0]; 
-        }
-        else if(weight == BlockWeightLevel.Level2)
-        {
-            CurrentSprite = BlockSprites[1];
-        }
-        else if(weight == BlockWeightLevel.Level3)
-        {
-            CurrentSprite = BlockSprites[2];
-        }
-        else
-        {
-            CurrentSprite = BlockSprites[3];
-        }
+        CurrentSprite = hashmap[weight];
+        
         sp.sprite = CurrentSprite;
     }
 
@@ -94,4 +97,6 @@ public class Block : MonoBehaviour
             }
         }
     }
+
+
 }
