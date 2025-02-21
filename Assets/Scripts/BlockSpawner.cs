@@ -18,20 +18,12 @@ public class BlockSpawner : MonoBehaviour
 
     private void Awake()
     {
-        Debug.Log(spawnQueue);
         spawnQueue = new Queue<GameObject>();
-        Debug.Log(spawnQueue);
         foreach (GameObject bp in blockPrefabs)
         {
             spawnQueue.Enqueue(bp);
         }
     }
-    private void Start()
-    {
-        
-    }
-
-
 
     // This method is called and spawns a block at specified spawn point
     public GameObject SpawnBlock()
@@ -45,8 +37,6 @@ public class BlockSpawner : MonoBehaviour
     {
         var rand = new System.Random();
         int randIndex = rand.Next(0, blockPrefabs.Length);
-        Debug.Log(blockPrefabs[randIndex]);
-        Debug.Log(spawnQueue);
         spawnQueue.Enqueue(blockPrefabs[randIndex]);
     }
     
