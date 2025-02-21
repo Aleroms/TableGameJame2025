@@ -53,8 +53,11 @@ public class Block : MonoBehaviour
 
     private void ChangeSprite()
     {
-        //Change CurrentSprite component, and update renderer to match 
-        sp.sprite = spriteByWeight[weight];
+        //makes it so no index outofbounds
+        if(weight <= BlockWeightLevel.Level4)
+        {
+            sp.sprite = spriteByWeight[weight];
+        }
     }
 
     private void ChangeWeight()
@@ -117,12 +120,20 @@ public class Block : MonoBehaviour
                 CombineBlocks();
                 Destroy(other.gameObject);
             }
-            CanCombine = true;
+
+            StartCoroutine(UselessAssFunction());
 
         }
 
 
 
+    }
+    // need a time delay before setting this canCombine to true because
+    // the other script is setting it to false.
+    private  IEnumerator UselessAssFunction()
+    {
+        yield return new WaitForSeconds(0.5f);
+        CanCombine = true;
     }
 
 }
