@@ -16,14 +16,19 @@ public class BlockSpawner : MonoBehaviour
 
     private Queue<GameObject> spawnQueue;
 
-    private void Start()
+    private void Awake()
     {
-        
+        Debug.Log(spawnQueue);
         spawnQueue = new Queue<GameObject>();
-        foreach(GameObject bp in blockPrefabs)
+        Debug.Log(spawnQueue);
+        foreach (GameObject bp in blockPrefabs)
         {
             spawnQueue.Enqueue(bp);
         }
+    }
+    private void Start()
+    {
+        
     }
 
 
@@ -40,6 +45,8 @@ public class BlockSpawner : MonoBehaviour
     {
         var rand = new System.Random();
         int randIndex = rand.Next(0, blockPrefabs.Length);
+        Debug.Log(blockPrefabs[randIndex]);
+        Debug.Log(spawnQueue);
         spawnQueue.Enqueue(blockPrefabs[randIndex]);
     }
     
