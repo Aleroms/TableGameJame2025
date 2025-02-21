@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1926074068832677249}
   - component: {fileID: 7272419240402395873}
   - component: {fileID: -936588433888252114}
-  - component: {fileID: 8686098613756625915}
+  - component: {fileID: 8708885085152693179}
   m_Layer: 0
   m_Name: bridge
   m_TagString: bridge
@@ -136,8 +136,8 @@ MonoBehaviour:
   - {fileID: 21300000, guid: ee831674ec646a848a30b0a61ebfc8ca, type: 3}
   - {fileID: 21300000, guid: a8d1acbf65e7c0d4c9ec7e3e3d9ee16d, type: 3}
   CurrentSprite: {fileID: 0}
---- !u!61 &8686098613756625915
-BoxCollider2D:
+--- !u!60 &8708885085152693179
+PolygonCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -178,6 +178,19 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 2.29, y: 1.01}
-  m_EdgeRadius: 0
+  m_Points:
+    m_Paths:
+    - - {x: -0.015, y: 0.055}
+      - {x: 0.255, y: -0.015}
+      - {x: 0.345, y: -0.074999996}
+      - {x: 0.475, y: -0.225}
+      - {x: 0.53499997, y: -0.505}
+      - {x: 1.145, y: -0.505}
+      - {x: 1.145, y: 0.505}
+      - {x: -1.145, y: 0.505}
+      - {x: -1.145, y: -0.505}
+      - {x: -0.53499997, y: -0.505}
+      - {x: -0.465, y: -0.225}
+      - {x: -0.405, y: -0.13499999}
+      - {x: -0.255, y: -0.005}
+  m_UseDelaunayMesh: 0
