@@ -31,8 +31,8 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         // Get the weightDiff, and if it has changed, set the new scale height destination
-        Debug.Log("Left Scale: " + left_detector.currentWeight);
-        Debug.Log("Right Scale: " + right_detector.currentWeight);
+        //Debug.Log("Left Scale: " + left_detector.currentWeight);
+        //Debug.Log("Right Scale: " + right_detector.currentWeight);
         weightDiff = (right_detector.currentWeight - left_detector.currentWeight)/10;
         if (weightDiff != previous_weightDiff)
         {
@@ -63,7 +63,7 @@ public class GameManager : MonoBehaviour
         //}
         new_left_scale_y = starting_yPos + weightDiff;
         new_right_scale_y = starting_yPos - weightDiff;
-        Debug.Log("---Left: " + new_left_scale_y);
-        Debug.Log("---Right: " + new_right_scale_y);
+        //Debug.Log("---Left: " + new_left_scale_y);
+        //Debug.Log("---Right: " + new_right_scale_y);
     }
 }

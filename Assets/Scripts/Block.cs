@@ -4,58 +4,57 @@ using UnityEngine;
 public class Block : MonoBehaviour
 {
     //DONT CHANGE BLOCKTYPE DURING RUNTIME
-    // keyword static prevents the type from showing in the inspector
     private enum BlockType { RIGHTTRI, EQTRI, RECT, BRIDGE }
     private enum BlockWeightLevel { Level1, Level2, Level3, Level4 }
+
+    // this block's type
     [SerializeField] private BlockType type;
     [SerializeField] private BlockWeightLevel weight;
-
-
-    [SerializeField] public int BlockWeight; 
+    public int BlockWeight { get; set; }
+    private Dictionary<BlockWeightLevel, Sprite> spriteByWeight;
 
 
     [SerializeField] private bool CanCombine = true; 
 
     // defines the block combination progression
     [SerializeField] private Sprite[] BlockSprites;
-    [SerializeField] private Sprite CurrentSprite;
-    private SpriteRenderer sp; 
+    private SpriteRenderer sp;
+
+
     private void Start()
     {
-        //4 prefabs one for each shape
-        //weight and sprite need to be updated when they combine/on runtime 
-        float randomSeed = Random.Range(0, 1); 
-        if(randomSeed >= 0.5)
-        {
-            weight = BlockWeightLevel.Level1; 
-        }
-        else
-        {
-            weight = BlockWeightLevel.Level2;
-        }
-        if (sp = GetComponent<SpriteRenderer>())
-        {
-            ChangeSprite();
-        }
+        spriteByWeight = new Dictionary<BlockWeightLevel, Sprite>();
+        sp = GetComponent<SpriteRenderer>();
+        InitializeBlockWeight();
+        InitializeSpriteWeightDict();
         ChangeWeight();
-        // i am not sure what this means ^
-        // maybe you can help me understand
 
+
+    }
+
+    private void InitializeBlockWeight()
+    {
+        float randomSeed = Random.Range(0, 1);
+        weight = randomSeed >= 0.5f ? BlockWeightLevel.Level1 : BlockWeightLevel.Level2;
+    }
+    private void InitializeSpriteWeightDict()
+    {
+        spriteByWeight.Add(BlockWeightLevel.Level1, BlockSprites[0]);
+        spriteByWeight.Add(BlockWeightLevel.Level2, BlockSprites[1]);
+        spriteByWeight.Add(BlockWeightLevel.Level3, BlockSprites[2]);
+        spriteByWeight.Add(BlockWeightLevel.Level4, BlockSprites[3]);
+    }
+    private void CombineBlocks()
+    {
+        weight++;
+        ChangeSprite();
+        ChangeWeight();
     }
 
     private void ChangeSprite()
     {
-        // a better way is to create a hash and map the value
-        var hashmap = new Dictionary<BlockWeightLevel, Sprite>();
-        hashmap.Add(BlockWeightLevel.Level1, BlockSprites[0]);
-        hashmap.Add(BlockWeightLevel.Level2, BlockSprites[1]);
-        hashmap.Add(BlockWeightLevel.Level3, BlockSprites[2]);
-        hashmap.Add(BlockWeightLevel.Level4 , BlockSprites[3]);
-
         //Change CurrentSprite component, and update renderer to match 
-        CurrentSprite = hashmap[weight];
-        
-        sp.sprite = CurrentSprite;
+        sp.sprite = spriteByWeight[weight];
     }
 
     private void ChangeWeight()
@@ -99,5 +98,31 @@ public class Block : MonoBehaviour
         }
     }
 
+    private void OnCollisionEnter2D(Collision2D other)
+    {
+
+        var otherBlockScript = other.gameObject.GetComponent<Block>();
+
+        if (otherBlockScript != null)
+        {
+            otherBlockScript.CanCombine = false;
+            var otherWeight = otherBlockScript.weight;
+            var otherType = otherBlockScript.type;
+            Debug.Log(otherType);
+
+            // combine if other is same block type and weight
+            if (type == otherType && weight == otherWeight && CanCombine)
+            {
+                Debug.Log("combining");
+                CombineBlocks();
+                Destroy(other.gameObject);
+            }
+            CanCombine = true;
+
+        }
+
+
+
+    }
 
 }

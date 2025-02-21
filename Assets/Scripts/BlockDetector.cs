@@ -9,6 +9,7 @@ using UnityEngine;
 public class BlockDetector : MonoBehaviour
 {
     public int currentWeight;
+    // it would be nice to have a UI display the currentweight
 
     // Start is called before the first frame update
     void Start()
@@ -32,5 +33,11 @@ public class BlockDetector : MonoBehaviour
         {
             currentWeight -= block.BlockWeight;
         }
+    }
+    // this is used when blocks combine
+    public void UpdateWeight(int oldWeight, int newWeight)
+    {
+        currentWeight -= oldWeight;
+        currentWeight += newWeight;
     }
 }
