@@ -5,6 +5,7 @@ using UnityEngine;
 public class DropFromMousePosition : MonoBehaviour
 {
     [SerializeField] private Transform mouseTarget;
+    [SerializeField] private BlockSpawner blockSpawner;
 
     // Start is called before the first frame update
     void Start()
@@ -20,11 +21,19 @@ public class DropFromMousePosition : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0) && mouseTarget.GetChild(0) != null)
         {
-            // Let block fall and separate it from the mousePosition
-            var block = mouseTarget.GetChild(0);
-            block.GetComponent<Rigidbody2D>().simulated = true;
-            block.parent = null;
-            
+            StartCoroutine(ReleaseAndSpawnNewBlock());
         }
+    }
+
+    IEnumerator ReleaseAndSpawnNewBlock()
+    {
+        // Let block fall and separate it from the mousePosition
+        var block = mouseTarget.GetChild(0);
+        block.GetComponent<Rigidbody2D>().simulated = true;
+        block.parent = null;
+
+        yield return new WaitForSeconds(1);
+
+        blockSpawner.SpawnBlock();
     }
 }

@@ -11,7 +11,7 @@ public class Block : MonoBehaviour
     [SerializeField] private BlockWeightLevel weight;
 
 
-    [SerializeField] private int BlockWeight; 
+    [SerializeField] public int BlockWeight; 
 
 
     [SerializeField] private bool CanCombine = true; 
@@ -37,6 +37,7 @@ public class Block : MonoBehaviour
         {
             ChangeSprite();
         }
+        ChangeWeight();
         // i am not sure what this means ^
         // maybe you can help me understand
 

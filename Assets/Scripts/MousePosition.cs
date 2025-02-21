@@ -27,7 +27,6 @@ public class MousePosition : MonoBehaviour
         }
         mousePos.z = 0;
 
-        Debug.Log(mousePos);
         mouseTarget.position = mousePos;
     }
 }
