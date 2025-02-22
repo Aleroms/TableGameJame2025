@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using DG.Tweening; 
 public class GameManager : MonoBehaviour
 {
     [SerializeField] private BlockSpawner blockSpawner;
@@ -10,6 +10,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private int starting_yPos;
     private int previous_weightDiff = 0;
     private int weightDiff = 0;
+    [SerializeField] private int weightDiffThreshold = 100; //Threshold for which game over is triggered 
+    [SerializeField] private int weightDiffWarningThreshold = 80; //Threshold for which warning will trigger
     private Transform left_scale;
     private Transform right_scale;
     private float new_left_scale_y;
@@ -17,6 +19,8 @@ public class GameManager : MonoBehaviour
     private float time_elapsed = 0; // Time spent moving scales
     private float duration = 10f; //How long it takes for scales to adjust to new position
 
+
+    [SerializeField] private GameObject GameOverPanel; 
     // Start is called before the first frame update
     void Start()
     {
@@ -47,6 +51,23 @@ public class GameManager : MonoBehaviour
             left_scale.position = new Vector2(left_scale.position.x, Mathf.Lerp(left_scale.position.y, new_left_scale_y, time_elapsed/duration));
             right_scale.position = new Vector2(right_scale.position.x, Mathf.Lerp(right_scale.position.y, new_right_scale_y, time_elapsed / duration));
         }
+
+        if(weightDiff >= weightDiffWarningThreshold)
+        {
+            //Which one is the heavier scale?
+            if(right_detector.currentWeight < left_detector.currentWeight)
+            {
+                WiggleScale(left_scale); 
+            }
+            else
+            {
+                WiggleScale(right_scale); 
+            }
+        }
+        if(weightDiff >= weightDiffThreshold)
+        {
+            GameOver(); 
+        }
     }
 
     void SetNewScaleHeight()
@@ -65,5 +86,15 @@ public class GameManager : MonoBehaviour
         new_right_scale_y = starting_yPos - weightDiff;
         //Debug.Log("---Left: " + new_left_scale_y);
         //Debug.Log("---Right: " + new_right_scale_y);
+    }
+
+    void WiggleScale(Transform scaleToWiggle)
+    {
+        scaleToWiggle.DOShakePosition(10f, 5f, 10, 70f, false, false, ShakeRandomnessMode.Harmonic); 
+    }
+
+    void GameOver()
+    {
+        GameOverPanel.SetActive(true); 
     }
 }
