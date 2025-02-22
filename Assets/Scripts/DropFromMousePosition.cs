@@ -23,6 +23,10 @@ public class DropFromMousePosition : MonoBehaviour
         {
             StartCoroutine(ReleaseAndSpawnNewBlock());
         }
+        if (Input.GetMouseButtonDown(1) && mouseTarget.GetChild(0) != null)
+        {
+            StartCoroutine(RotateBlock()); 
+        }
     }
 
     IEnumerator ReleaseAndSpawnNewBlock()
@@ -36,5 +40,12 @@ public class DropFromMousePosition : MonoBehaviour
         yield return new WaitForSeconds(1);
 
         blockSpawner.SpawnBlock();
+    }
+
+    IEnumerator RotateBlock()
+    {
+        var block = mouseTarget.GetChild(0);
+        block.GetComponent<Transform>().transform.Rotate(0, 0, 90); 
+        yield return new WaitForSeconds(1);
     }
 }
