@@ -20,6 +20,7 @@ public class BlockDetector : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         Block block = collision.GetComponent<Block>();
+        block.detector = this;
         if (block != null)
         {
             currentWeight += block.BlockWeight;

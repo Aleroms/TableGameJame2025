@@ -20,6 +20,8 @@ public class Block : MonoBehaviour
     [SerializeField] private Sprite[] BlockSprites;
     private SpriteRenderer sp;
 
+    // BlockDetector.cs updates this when the block enters its trigger collider
+    public BlockDetector detector;
 
     private void Start()
     {
@@ -34,9 +36,9 @@ public class Block : MonoBehaviour
 
     private void InitializeBlockWeight()
     {
-        float randomSeed = Random.Range(0, 1);
-        weight = randomSeed >= 0.5f ? BlockWeightLevel.Level1 : BlockWeightLevel.Level2;
+        weight = BlockWeightLevel.Level1;
     }
+
     private void InitializeSpriteWeightDict()
     {
         spriteByWeight.Add(BlockWeightLevel.Level1, BlockSprites[0]);
@@ -49,6 +51,7 @@ public class Block : MonoBehaviour
         weight++;
         ChangeSprite();
         ChangeWeight();
+
     }
 
     private void ChangeSprite()
@@ -74,10 +77,10 @@ public class Block : MonoBehaviour
                     BlockWeight = 10; 
                     break;
                 case BlockWeightLevel.Level3:
-                    BlockWeight = 15; 
+                    BlockWeight = 20; 
                     break;
                 case BlockWeightLevel.Level4:
-                    BlockWeight = 20; 
+                    BlockWeight = 40; 
                     break;
             }
         }
@@ -92,48 +95,36 @@ public class Block : MonoBehaviour
                     BlockWeight = 20;
                     break;
                 case BlockWeightLevel.Level3:
-                    BlockWeight = 30;
-                    break;
-                case BlockWeightLevel.Level4:
                     BlockWeight = 40;
                     break;
+                case BlockWeightLevel.Level4:
+                    BlockWeight = 80;
+                    break;
             }
+        }
+        ChangeSprite();
+        if (detector != null)
+        {
+            detector.UpdateWeight(BlockWeight / 2, BlockWeight);
         }
     }
 
     private void OnCollisionEnter2D(Collision2D other)
     {
-
+        // Hitting another block
         var otherBlockScript = other.gameObject.GetComponent<Block>();
-
-        if (otherBlockScript != null)
+        if (otherBlockScript != null && CanCombine)
         {
             otherBlockScript.CanCombine = false;
             var otherWeight = otherBlockScript.weight;
             var otherType = otherBlockScript.type;
-            Debug.Log(otherType);
 
             // combine if other is same block type and weight
-            if (type == otherType && weight == otherWeight && CanCombine)
+            if (type == otherType && weight == otherWeight)
             {
-                Debug.Log("combining");
                 CombineBlocks();
                 Destroy(other.gameObject);
             }
-
-            StartCoroutine(UselessAssFunction());
-
         }
-
-
-
     }
-    // need a time delay before setting this canCombine to true because
-    // the other script is setting it to false.
-    private  IEnumerator UselessAssFunction()
-    {
-        yield return new WaitForSeconds(0.5f);
-        CanCombine = true;
-    }
-
 }
