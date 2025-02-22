@@ -14,12 +14,19 @@ public class GameManager : MonoBehaviour
     [SerializeField] private int weightDiffWarningThreshold = 80; //Threshold for which warning will trigger
     private Transform left_scale;
     private Transform right_scale;
+    [SerializeField] private Transform left_scale_left_boundary;
+    [SerializeField] private Transform left_scale_right_boundary;
+    [SerializeField] private Transform right_scale_left_boundary;
+    [SerializeField] private Transform right_scale_right_boundary;
     private float new_left_scale_y;
     private float new_right_scale_y;
     private float time_elapsed = 0; // Time spent moving scales
     private float duration = 10f; //How long it takes for scales to adjust to new position
 
-
+    //Turn system
+    [SerializeField] public int turn = 1;
+    [SerializeField] private MousePosition mousePosition;
+    [SerializeField] private UIManager uiManager; 
     [SerializeField] private GameObject GameOverPanel; 
     // Start is called before the first frame update
     void Start()
@@ -96,5 +103,23 @@ public class GameManager : MonoBehaviour
     void GameOver()
     {
         GameOverPanel.SetActive(true); 
+    }
+    public void ProgressTurn()
+    {
+        turn++; 
+        if(turn%2 == 0) //Even turns is right boundary, odd turns is left boundary 
+        {
+            mousePosition.boundaryLeft = right_scale_left_boundary; 
+            mousePosition.boundaryRight = right_scale_right_boundary;
+            uiManager.HighlightRight();
+            uiManager.UpdateTurn(turn); 
+        }
+        else
+        {
+            mousePosition.boundaryLeft = left_scale_left_boundary; 
+            mousePosition.boundaryRight = left_scale_right_boundary;
+            uiManager.HighlightLeft();
+            uiManager.UpdateTurn(turn);
+        }
     }
 }

@@ -7,8 +7,8 @@ public class MousePosition : MonoBehaviour
 {
     [SerializeField] private Camera _camera;
     [SerializeField] private Transform mouseTarget;
-    [SerializeField] private Transform boundaryLeft;
-    [SerializeField] private Transform boundaryRight;
+    [SerializeField] public Transform boundaryLeft;
+    [SerializeField] public Transform boundaryRight;
 
     // Update is called once per frame
     void Update()

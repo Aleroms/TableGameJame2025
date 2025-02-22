@@ -6,7 +6,7 @@ public class DropFromMousePosition : MonoBehaviour
 {
     [SerializeField] private Transform mouseTarget;
     [SerializeField] private BlockSpawner blockSpawner;
-
+    [SerializeField] private GameManager gameManager; 
     // Start is called before the first frame update
     void Start()
     {
@@ -28,6 +28,7 @@ public class DropFromMousePosition : MonoBehaviour
     IEnumerator ReleaseAndSpawnNewBlock()
     {
         // Let block fall and separate it from the mousePosition
+        gameManager.ProgressTurn(); 
         var block = mouseTarget.GetChild(0);
         block.GetComponent<Rigidbody2D>().simulated = true;
         block.parent = null;
