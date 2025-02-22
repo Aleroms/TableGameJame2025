@@ -128,14 +128,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 0
   weight: 0
-  BlockWeight: 0
   CanCombine: 1
   BlockSprites:
   - {fileID: 21300000, guid: 070ddac649cbba94892bf90d3f19ccbf, type: 3}
   - {fileID: 21300000, guid: bde6bd7cde9a1c94f88addb801f23c51, type: 3}
-  - {fileID: 21300000, guid: 042e773d3aa9b764799a62273b048c8b, type: 3}
   - {fileID: 21300000, guid: 8ad31f44a0e456341b233e1302869119, type: 3}
-  CurrentSprite: {fileID: 0}
+  - {fileID: 21300000, guid: 042e773d3aa9b764799a62273b048c8b, type: 3}
 --- !u!60 &8682238997664147539
 PolygonCollider2D:
   m_ObjectHideFlags: 0
