@@ -14,6 +14,7 @@ public class DropFromMousePosition : MonoBehaviour
         {
             mouseTarget.GetChild(0).GetComponent<Rigidbody2D>().simulated = false;
         }
+        Physics.gravity = new Vector3(0, -1, 0); 
     }
 
     // Update is called once per frame
