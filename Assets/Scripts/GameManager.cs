@@ -18,6 +18,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Transform left_scale_right_boundary;
     [SerializeField] private Transform right_scale_left_boundary;
     [SerializeField] private Transform right_scale_right_boundary;
+    private float scaleHeightMultiplier = 0.10f; // Used to position y value of scales
     private float new_left_scale_y;
     private float new_right_scale_y;
     private float time_elapsed = 0; // Time spent moving scales
@@ -44,7 +45,7 @@ public class GameManager : MonoBehaviour
         // Get the weightDiff, and if it has changed, set the new scale height destination
         //Debug.Log("Left Scale: " + left_detector.currentWeight);
         //Debug.Log("Right Scale: " + right_detector.currentWeight);
-        weightDiff = (right_detector.currentWeight - left_detector.currentWeight)/10;
+        weightDiff = (right_detector.currentWeight - left_detector.currentWeight);
         if (weightDiff != previous_weightDiff)
         {
             previous_weightDiff = weightDiff;
@@ -59,7 +60,7 @@ public class GameManager : MonoBehaviour
             right_scale.position = new Vector2(right_scale.position.x, Mathf.Lerp(right_scale.position.y, new_right_scale_y, time_elapsed / duration));
         }
 
-        if(Mathf.Abs(weightDiff) * 10 >= weightDiffWarningThreshold)
+        if(Mathf.Abs(weightDiff) >= weightDiffWarningThreshold)
         {
             //Which one is the heavier scale?
             if(right_detector.currentWeight < left_detector.currentWeight)
@@ -71,7 +72,7 @@ public class GameManager : MonoBehaviour
                 WiggleScale(right_scale); 
             }
         }
-        if(weightDiff >= weightDiffThreshold)
+        if(Mathf.Abs(weightDiff) >= weightDiffThreshold)
         {
             GameOver(); 
         }
@@ -89,8 +90,8 @@ public class GameManager : MonoBehaviour
         //    new_left_scale_y = starting_yPos + weightDiff;
         //    new_right_scale_y = starting_yPos - weightDiff;
         //}
-        new_left_scale_y = starting_yPos + weightDiff;
-        new_right_scale_y = starting_yPos - weightDiff;
+        new_left_scale_y = starting_yPos + (weightDiff * scaleHeightMultiplier);
+        new_right_scale_y = starting_yPos - (weightDiff * scaleHeightMultiplier);
         //Debug.Log("---Left: " + new_left_scale_y);
         //Debug.Log("---Right: " + new_right_scale_y);
     }

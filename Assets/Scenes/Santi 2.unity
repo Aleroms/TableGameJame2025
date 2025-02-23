@@ -2467,6 +2467,7 @@ MonoBehaviour:
   left_scale_right_boundary: {fileID: 1980121092}
   right_scale_left_boundary: {fileID: 2040255953}
   right_scale_right_boundary: {fileID: 121027473}
+  scaleHeightMultiplier: 0.1
   duration: 400
   turn: 1
   mousePosition: {fileID: 1354296322}
