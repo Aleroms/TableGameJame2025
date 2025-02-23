@@ -35,21 +35,21 @@ public class UIManager : MonoBehaviour
 
     public void TintLeft()
     {
-        leftScaleHighlight.GetComponent<Image>().color = new Color32(180, 0, 0, 100); 
+        leftScaleHighlight.GetComponent<SpriteRenderer>().color = new Color32(255, 0, 0, 76); 
     }
 
     public void TintRight()
     {
-        rightScaleHighlight.GetComponent<Image>().color = new Color32(180, 0, 0, 100);
+        rightScaleHighlight.GetComponent<SpriteRenderer>().color = new Color32(255, 0, 0, 76);
     }
 
     public void RestoreLeft()
     {
-        leftScaleHighlight.GetComponent<Image>().color = new Color32(43, 43, 43, 100);
+        leftScaleHighlight.GetComponent<SpriteRenderer>().color = new Color32(255, 255, 255, 76);
     }
 
     public void RestoreRight()
     {
-        leftScaleHighlight.GetComponent<Image>().color = new Color32(43, 43, 43, 100);
+        leftScaleHighlight.GetComponent<SpriteRenderer>().color = new Color32(255, 255, 255, 76);
     }
 }

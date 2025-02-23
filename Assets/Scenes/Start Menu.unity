@@ -2176,6 +2176,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: AudioToggle
       objectReference: {fileID: 0}
+    - target: {fileID: 7501346498742804073, guid: 97271e0c7d7c69f44b04e3c5a73949e1, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 8721831847846293846, guid: 97271e0c7d7c69f44b04e3c5a73949e1, type: 3}
     m_RemovedGameObjects: []
