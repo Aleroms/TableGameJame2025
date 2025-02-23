@@ -2461,13 +2461,12 @@ MonoBehaviour:
   right_detector: {fileID: 524678939}
   starting_yPos: -20
   weightDiff: 0
-  weightDiffThreshold: 100
-  weightDiffWarningThreshold: 80
+  weightDiffThreshold: 70
+  weightDiffWarningThreshold: 50
   left_scale_left_boundary: {fileID: 1276353959}
   left_scale_right_boundary: {fileID: 1980121092}
   right_scale_left_boundary: {fileID: 2040255953}
   right_scale_right_boundary: {fileID: 121027473}
-  scaleHeightMultiplier: 0.1
   duration: 400
   turn: 1
   mousePosition: {fileID: 1354296322}
