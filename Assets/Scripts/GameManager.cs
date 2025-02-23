@@ -1,7 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using DG.Tweening; 
+using DG.Tweening;
+using UnityEngine.SceneManagement; 
 public class GameManager : MonoBehaviour
 {
     [SerializeField] private BlockSpawner blockSpawner;
@@ -65,11 +66,22 @@ public class GameManager : MonoBehaviour
             //Which one is the heavier scale?
             if(right_detector.currentWeight < left_detector.currentWeight)
             {
-                WiggleScale(left_scale); 
+                uiManager.TintLeft();  
             }
             else
             {
-                WiggleScale(right_scale); 
+                uiManager.TintRight(); 
+            }
+        }
+        else
+        {
+            if (right_detector.currentWeight < left_detector.currentWeight)
+            {
+                uiManager.RestoreLeft();
+            }
+            else
+            {
+                uiManager.RestoreRight();
             }
         }
         if(Mathf.Abs(weightDiff) >= weightDiffThreshold)
@@ -96,14 +108,10 @@ public class GameManager : MonoBehaviour
         //Debug.Log("---Right: " + new_right_scale_y);
     }
 
-    void WiggleScale(Transform scaleToWiggle)
-    {
-        scaleToWiggle.DOShakePosition(10f, 0.25f, 1, 70f, false, false, ShakeRandomnessMode.Harmonic); 
-    }
-
     void GameOver()
     {
-        GameOverPanel.SetActive(true); 
+        FindObjectOfType<AudioManager>().turns = turn; 
+        SceneManager.LoadSceneAsync("Game Over"); 
     }
     public void ProgressTurn()
     {

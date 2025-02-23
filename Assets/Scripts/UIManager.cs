@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using TMPro; 
+using TMPro;
+using DG.Tweening;
+using UnityEngine.UI; 
 public class UIManager : MonoBehaviour
 {
     [SerializeField] private BlockDetector leftScale; 
@@ -29,5 +31,25 @@ public class UIManager : MonoBehaviour
     public void UpdateTurn(int turn)
     {
         turnText.text = "Turn: " + turn.ToString();
+    }
+
+    public void TintLeft()
+    {
+        leftScaleHighlight.GetComponent<Image>().color = new Color32(180, 0, 0, 100); 
+    }
+
+    public void TintRight()
+    {
+        rightScaleHighlight.GetComponent<Image>().color = new Color32(180, 0, 0, 100);
+    }
+
+    public void RestoreLeft()
+    {
+        leftScaleHighlight.GetComponent<Image>().color = new Color32(43, 43, 43, 100);
+    }
+
+    public void RestoreRight()
+    {
+        leftScaleHighlight.GetComponent<Image>().color = new Color32(43, 43, 43, 100);
     }
 }
