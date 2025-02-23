@@ -19,10 +19,7 @@ public class BlockSpawner : MonoBehaviour
     private void Awake()
     {
         spawnQueue = new Queue<GameObject>();
-        foreach (GameObject bp in blockPrefabs)
-        {
-            spawnQueue.Enqueue(bp);
-        }
+        AddBlockToQueue();
     }
 
     // This method is called and spawns a block at specified spawn point
