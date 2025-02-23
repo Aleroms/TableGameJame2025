@@ -9,6 +9,7 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private AudioClip dunmeshi;
 
     [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioSource sfxSource;
 
     public int turns = 0; 
     private void Awake()
@@ -30,4 +31,8 @@ public class AudioManager : MonoBehaviour
         audioSource.Play(); 
     }
     
+    public void PlayWoodBlock()
+    {
+        sfxSource.Play();
+    }
 }

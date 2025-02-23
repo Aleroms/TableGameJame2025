@@ -23,10 +23,15 @@ public class Block : MonoBehaviour
     // BlockDetector.cs updates this when the block enters its trigger collider
     public BlockDetector detector;
 
+    // Block audio during collisions
+    private AudioSource audioSource;
+    private Collision2D lastHitObject = null;
+
     private void Start()
     {
         spriteByWeight = new Dictionary<BlockWeightLevel, Sprite>();
         sp = GetComponent<SpriteRenderer>();
+        audioSource = GetComponent<AudioSource>();
         InitializeBlockWeight();
         InitializeSpriteWeightDict();
         ChangeWeight();
@@ -111,6 +116,16 @@ public class Block : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D other)
     {
+        if (other != lastHitObject)
+        {
+            lastHitObject = other;
+            audioSource.Play();
+            if (!audioSource.mute)
+            {
+                StartCoroutine(AudioTimer());
+            }
+        }
+        
         // Hitting another block
         var otherBlockScript = other.gameObject.GetComponent<Block>();
         if (otherBlockScript != null && CanCombine)
@@ -126,5 +141,14 @@ public class Block : MonoBehaviour
                 Destroy(other.gameObject);
             }
         }
+    }
+
+    IEnumerator AudioTimer()
+    {
+        // Wait before playing a sound again, to avoid repeat sounds
+        yield return new WaitForSeconds(0.25f);
+        audioSource.mute = true;
+        yield return new WaitForSeconds(2);
+        audioSource.mute = false;
     }
 }
