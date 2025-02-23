@@ -1,12 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class DropFromMousePosition : MonoBehaviour
 {
     [SerializeField] private Transform mouseTarget;
     [SerializeField] private BlockSpawner blockSpawner;
-    [SerializeField] private GameManager gameManager; 
+    [SerializeField] private GameManager gameManager;
+
+    public bool isHoveringAudioToggle; // Stupid way to do this, but no time to fix. AudioToggle.cs directly interacts with this.
+
     // Start is called before the first frame update
     void Start()
     {
@@ -20,7 +24,7 @@ public class DropFromMousePosition : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButtonDown(0) && mouseTarget.GetChild(0) != null)
+        if (Input.GetMouseButtonDown(0) && mouseTarget.GetChild(0) != null && !isHoveringAudioToggle)
         {
             StartCoroutine(ReleaseAndSpawnNewBlock());
         }

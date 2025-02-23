@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class AudioManager : MonoBehaviour
 {
@@ -10,6 +11,7 @@ public class AudioManager : MonoBehaviour
 
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private AudioSource sfxSource;
+   
 
     public int turns = 0; 
     private void Awake()
@@ -35,4 +37,6 @@ public class AudioManager : MonoBehaviour
     {
         sfxSource.Play();
     }
+
+
 }
