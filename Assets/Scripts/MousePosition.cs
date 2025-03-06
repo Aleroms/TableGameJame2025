@@ -16,7 +16,7 @@ public class MousePosition : MonoBehaviour
         // Position of object to be dropped based off of the player's mouse
         Vector3 mousePos = new Vector3(Input.mousePosition.x, Input.mousePosition.y, -(_camera.transform.position.z));
         mousePos = _camera.ScreenToWorldPoint(mousePos);
-        mousePos.y = 0;
+        mousePos.y = 40;
         if (mousePos.x < boundaryLeft.position.x)
         {
             mousePos.x = boundaryLeft.position.x;

@@ -5,6 +5,22 @@ using DG.Tweening;
 using UnityEngine.SceneManagement; 
 public class GameManager : MonoBehaviour
 {
+    //Made it a singleton 
+    public static GameManager _instance; 
+    public static GameManager Instance {  get { return _instance; } }
+
+    private void Awake()
+    {
+        if (_instance != null && _instance != this)
+        {
+            Destroy(this.gameObject); 
+        }
+        else
+        {
+            _instance = this; 
+        }
+        DontDestroyOnLoad(this); 
+    }
     [SerializeField] private BlockSpawner blockSpawner;
     [SerializeField] private BlockDetector left_detector;
     [SerializeField] private BlockDetector right_detector;
@@ -15,21 +31,21 @@ public class GameManager : MonoBehaviour
     [SerializeField] private int weightDiffWarningThreshold = 80; //Threshold for which warning will trigger
     private Transform left_scale;
     private Transform right_scale;
-    [SerializeField] private Transform left_scale_left_boundary;
-    [SerializeField] private Transform left_scale_right_boundary;
-    [SerializeField] private Transform right_scale_left_boundary;
-    [SerializeField] private Transform right_scale_right_boundary;
     private float scaleHeightMultiplier = 0.10f; // Used to position y value of scales
     private float new_left_scale_y;
     private float new_right_scale_y;
     private float time_elapsed = 0; // Time spent moving scales
-    [SerializeField] private float duration = 10f; //How long it takes for scales to adjust to new position
+    [SerializeField] private float duration = 50f; //How long it takes for scales to adjust to new position
 
+
+    //Warning and Game Over 
+    private bool warning = false;
+    [SerializeField] public int penalty = 0; 
     //Turn system
     [SerializeField] public int turn = 1;
-    [SerializeField] private MousePosition mousePosition;
-    [SerializeField] private UIManager uiManager; 
-    [SerializeField] private GameObject GameOverPanel; 
+    [SerializeField] private int level = 1;
+    [SerializeField] public int merge = 0;
+    [SerializeField] private int mergeLevelModulator = 15; //Number of merges that would trigger a level increase
     // Start is called before the first frame update
     void Start()
     {
@@ -43,9 +59,19 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        MoveScale();
         // Get the weightDiff, and if it has changed, set the new scale height destination
-        //Debug.Log("Left Scale: " + left_detector.currentWeight);
-        //Debug.Log("Right Scale: " + right_detector.currentWeight);
+        WarningAndGameOver(); 
+    }
+
+    void SetNewScaleHeight()
+    {
+        new_left_scale_y = starting_yPos + (weightDiff * scaleHeightMultiplier);
+        new_right_scale_y = starting_yPos - (weightDiff * scaleHeightMultiplier);
+    }
+
+    void MoveScale()
+    {
         weightDiff = (right_detector.currentWeight - left_detector.currentWeight);
         if (weightDiff != previous_weightDiff)
         {
@@ -57,78 +83,52 @@ public class GameManager : MonoBehaviour
         if (left_scale.position.y != new_left_scale_y || right_scale.position.y != new_right_scale_y)
         {
             time_elapsed += Time.deltaTime;
-            left_scale.position = new Vector2(left_scale.position.x, Mathf.Lerp(left_scale.position.y, new_left_scale_y, time_elapsed/duration));
+            left_scale.position = new Vector2(left_scale.position.x, Mathf.Lerp(left_scale.position.y, new_left_scale_y, time_elapsed / duration));
             right_scale.position = new Vector2(right_scale.position.x, Mathf.Lerp(right_scale.position.y, new_right_scale_y, time_elapsed / duration));
         }
+    }
 
-        if(Mathf.Abs(weightDiff) >= weightDiffWarningThreshold)
+    void WarningAndGameOver()
+    {
+        if (Mathf.Abs(weightDiff) >= weightDiffWarningThreshold)
         {
-            //Which one is the heavier scale?
-            if(right_detector.currentWeight < left_detector.currentWeight)
-            {
-                uiManager.TintLeft();  
-            }
-            else
-            {
-                uiManager.TintRight(); 
-            }
+            Warning(true); 
         }
         else
         {
-            if (right_detector.currentWeight < left_detector.currentWeight)
-            {
-                uiManager.RestoreLeft();
-            }
-            else
-            {
-                uiManager.RestoreRight();
-            }
+            Warning(false); 
         }
-        if(Mathf.Abs(weightDiff) >= weightDiffThreshold)
+        if ((Mathf.Abs(weightDiff) >= weightDiffThreshold) || penalty >= 3)
         {
-            GameOver(); 
+            GameOver();
         }
     }
 
-    void SetNewScaleHeight()
+    void Warning(bool isWarning)
     {
-        //if (weightDiff >= 0)
-        //{
-        //    new_left_scale_y = starting_yPos - weightDiff;
-        //    new_right_scale_y = starting_yPos + weightDiff;
-        //}
-        //else
-        //{
-        //    new_left_scale_y = starting_yPos + weightDiff;
-        //    new_right_scale_y = starting_yPos - weightDiff;
-        //}
-        new_left_scale_y = starting_yPos + (weightDiff * scaleHeightMultiplier);
-        new_right_scale_y = starting_yPos - (weightDiff * scaleHeightMultiplier);
-        //Debug.Log("---Left: " + new_left_scale_y);
-        //Debug.Log("---Right: " + new_right_scale_y);
+        warning = isWarning; 
+        if(isWarning)
+        {
+            //Activate warning state 
+            Debug.Log("Warning activated"); 
+        }
+        else
+        {
+            //Deactivate warning state 
+            Debug.Log("Warning deactivated"); 
+        }
     }
-
     void GameOver()
     {
-        FindObjectOfType<AudioManager>().turns = turn; 
         SceneManager.LoadSceneAsync("Game Over"); 
     }
     public void ProgressTurn()
     {
         turn++; 
-        if(turn%2 == 0) //Even turns is right boundary, odd turns is left boundary 
+        if(merge%mergeLevelModulator == 0)
         {
-            mousePosition.boundaryLeft = right_scale_left_boundary; 
-            mousePosition.boundaryRight = right_scale_right_boundary;
-            uiManager.HighlightRight();
-            uiManager.UpdateTurn(turn); 
-        }
-        else
-        {
-            mousePosition.boundaryLeft = left_scale_left_boundary; 
-            mousePosition.boundaryRight = left_scale_right_boundary;
-            uiManager.HighlightLeft();
-            uiManager.UpdateTurn(turn);
+            level++;
+            Debug.Log("Level increased. Current level: " + level);
         }
     }
 }

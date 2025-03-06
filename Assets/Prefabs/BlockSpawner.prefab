@@ -79,7 +79,6 @@ MonoBehaviour:
   currentBlock: {fileID: 6185456644312204060, guid: 7154effadabe94041ab3a27391bdb85b, type: 3}
   blockPrefabs:
   - {fileID: 6185456644312204060, guid: 7154effadabe94041ab3a27391bdb85b, type: 3}
-  - {fileID: 6185456644312204060, guid: 316ad878c6ba2b744a2c0f9836ade2d4, type: 3}
   - {fileID: 6185456644312204060, guid: bb9e1a36d48b2ce48a31b3755a95a5e3, type: 3}
   - {fileID: 6185456644312204060, guid: a9d098360610c3842a54ab5dab915a12, type: 3}
   _spawnPoint: {fileID: 6314333620793249505}

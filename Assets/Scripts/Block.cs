@@ -4,8 +4,8 @@ using UnityEngine;
 public class Block : MonoBehaviour
 {
     //DONT CHANGE BLOCKTYPE DURING RUNTIME
-    private enum BlockType { RIGHTTRI, EQTRI, RECT, BRIDGE }
-    private enum BlockWeightLevel { Level1, Level2, Level3, Level4 }
+    private enum BlockType { TRI, RECT, BRIDGE }
+    private enum BlockWeightLevel { Level1, Level2, Level3, Level4, Level5 }
 
     // this block's type
     [SerializeField] private BlockType type;
@@ -54,6 +54,7 @@ public class Block : MonoBehaviour
     private void CombineBlocks()
     {
         weight++;
+        GameManager.Instance.merge++; 
         ChangeSprite();
         ChangeWeight();
 
@@ -71,7 +72,7 @@ public class Block : MonoBehaviour
     private void ChangeWeight()
     {
         //Changes individual weight based on current weight level value & sprite shape. 
-        if (type == BlockType.RIGHTTRI || type == BlockType.EQTRI)
+        if (type == BlockType.TRI)
         {
             switch (weight)
             {
@@ -86,10 +87,13 @@ public class Block : MonoBehaviour
                     break;
                 case BlockWeightLevel.Level4:
                     BlockWeight = 40; 
+                    break; 
+                case BlockWeightLevel.Level5:
+                    BlockWeight = 80; 
                     break;
             }
         }
-        else
+        else if(type == BlockType.BRIDGE)
         {
             switch (weight)
             {
@@ -104,6 +108,30 @@ public class Block : MonoBehaviour
                     break;
                 case BlockWeightLevel.Level4:
                     BlockWeight = 80;
+                    break;
+                case BlockWeightLevel.Level5:
+                    BlockWeight = 160;
+                    break; 
+            }
+        }
+        else
+        {
+            switch (weight)
+            {
+                case BlockWeightLevel.Level1:
+                    BlockWeight = 15;
+                    break;
+                case BlockWeightLevel.Level2:
+                    BlockWeight = 25;
+                    break;
+                case BlockWeightLevel.Level3:
+                    BlockWeight = 45;
+                    break;
+                case BlockWeightLevel.Level4:
+                    BlockWeight = 85;
+                    break;
+                case BlockWeightLevel.Level5:
+                    BlockWeight = 165;
                     break;
             }
         }
