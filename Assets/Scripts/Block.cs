@@ -54,7 +54,24 @@ public class Block : MonoBehaviour
     private void CombineBlocks()
     {
         weight++;
-        GameManager.Instance.merge++; 
+        GameManager.Instance.merge++;
+        GameManager.Instance.consecutive++; 
+        if(weight == BlockWeightLevel.Level2)
+        {
+            GameManager.Instance.UpdateScore(1); 
+        }
+        else if(weight == BlockWeightLevel.Level3)
+        {
+            GameManager.Instance.UpdateScore(2); 
+        }
+        else if(weight == BlockWeightLevel.Level4)
+        {
+            GameManager.Instance.UpdateScore(3); 
+        }
+        else if (weight == BlockWeightLevel.Level5)
+        {
+            GameManager.Instance.UpdateScore(4); 
+        }
         ChangeSprite();
         ChangeWeight();
 
@@ -77,7 +94,7 @@ public class Block : MonoBehaviour
             switch (weight)
             {
                 case BlockWeightLevel.Level1:
-                    BlockWeight = 5; 
+                    BlockWeight = 5;
                     break;
                 case BlockWeightLevel.Level2:
                     BlockWeight = 10; 
@@ -86,7 +103,7 @@ public class Block : MonoBehaviour
                     BlockWeight = 20; 
                     break;
                 case BlockWeightLevel.Level4:
-                    BlockWeight = 40; 
+                    BlockWeight = 40;    
                     break; 
                 case BlockWeightLevel.Level5:
                     BlockWeight = 80; 

@@ -2,33 +2,33 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
-using UnityEngine.SceneManagement; 
+using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     //Made it a singleton 
-    public static GameManager _instance; 
-    public static GameManager Instance {  get { return _instance; } }
+    public static GameManager _instance;
+    public static GameManager Instance { get { return _instance; } }
 
     private void Awake()
     {
         if (_instance != null && _instance != this)
         {
-            Destroy(this.gameObject); 
+            Destroy(this.gameObject);
         }
         else
         {
-            _instance = this; 
+            _instance = this;
         }
-        DontDestroyOnLoad(this); 
+        DontDestroyOnLoad(this);
     }
     [SerializeField] private BlockSpawner blockSpawner;
     [SerializeField] private BlockDetector left_detector;
     [SerializeField] private BlockDetector right_detector;
     [SerializeField] private int starting_yPos;
     private int previous_weightDiff = 0;
-    [SerializeField] private int weightDiff = 0;
-    [SerializeField] private int weightDiffThreshold = 100; //Threshold for which game over is triggered 
-    [SerializeField] private int weightDiffWarningThreshold = 80; //Threshold for which warning will trigger
+    [SerializeField] public int weightDiff = 0;
+    [SerializeField] public int weightDiffThreshold = 40; //Threshold for which game over is triggered 
+    [SerializeField] public int weightDiffWarningThreshold = 20; //Threshold for which warning will trigger
     private Transform left_scale;
     private Transform right_scale;
     private float scaleHeightMultiplier = 0.10f; // Used to position y value of scales
@@ -39,13 +39,15 @@ public class GameManager : MonoBehaviour
 
 
     //Warning and Game Over 
-    private bool warning = false;
-    [SerializeField] public int penalty = 0; 
+    public bool warning = false;
+    [SerializeField] public int penalty = 0;
     //Turn system
     [SerializeField] public int turn = 1;
-    [SerializeField] private int level = 1;
+    [SerializeField] public int level = 1;
     [SerializeField] public int merge = 0;
-    [SerializeField] private int mergeLevelModulator = 15; //Number of merges that would trigger a level increase
+    [SerializeField] private int mergeLevelModulator = 10; //Number of merges that would trigger a level increase
+    [SerializeField] public int score = 0;
+    [SerializeField] public int consecutive = 0; 
     // Start is called before the first frame update
     void Start()
     {
@@ -61,7 +63,7 @@ public class GameManager : MonoBehaviour
     {
         MoveScale();
         // Get the weightDiff, and if it has changed, set the new scale height destination
-        WarningAndGameOver(); 
+        WarningAndGameOver();
     }
 
     void SetNewScaleHeight()
@@ -92,43 +94,89 @@ public class GameManager : MonoBehaviour
     {
         if (Mathf.Abs(weightDiff) >= weightDiffWarningThreshold)
         {
-            Warning(true); 
+            warning = true; 
         }
         else
         {
-            Warning(false); 
+            warning = false; 
         }
         if ((Mathf.Abs(weightDiff) >= weightDiffThreshold) || penalty >= 3)
         {
             GameOver();
         }
     }
-
-    void Warning(bool isWarning)
-    {
-        warning = isWarning; 
-        if(isWarning)
-        {
-            //Activate warning state 
-            Debug.Log("Warning activated"); 
-        }
-        else
-        {
-            //Deactivate warning state 
-            Debug.Log("Warning deactivated"); 
-        }
-    }
     void GameOver()
     {
-        SceneManager.LoadSceneAsync("Game Over"); 
+        SceneManager.LoadSceneAsync("Game Over");
     }
     public void ProgressTurn()
     {
-        turn++; 
-        if(merge%mergeLevelModulator == 0)
+        consecutive = 0; 
+        turn++;
+        if (merge >= mergeLevelModulator)
         {
             level++;
+            merge = 0;
+            mergeLevelModulator += 5; 
+            weightDiffWarningThreshold += 10;
+            weightDiffThreshold = weightDiffWarningThreshold * 2; 
             Debug.Log("Level increased. Current level: " + level);
         }
+    }
+
+
+    public void UpdateScore(int blockTier)
+    {
+        switch (blockTier)
+        {
+            case 1:
+                {
+                    score += 10 * (level + 1);
+                    break;
+                }
+            case 2:
+                {
+                    score += 30 * (level + 1);
+                    break;
+                }
+            case 3:
+                {
+                    score += 100 * (level + 1);
+                    break;
+                }
+            case 4:
+                {
+                    score += 300 * (level + 1);
+                    break;
+                }
+            case 5:
+                {
+                    score += 1000 * (level + 1);
+                    break;
+                }
+        }
+        if(warning)
+        {
+            score += Mathf.RoundToInt(score * 1.5f); 
+        }
+        if(consecutive >= 2 && consecutive <= 5)
+        {
+            switch(consecutive)
+            {
+                case 2:
+                    score += Mathf.RoundToInt(score * 1.2f); 
+                    break; 
+                case 3:
+                    score += Mathf.RoundToInt(score * 1.4f); 
+                    break;
+                case 4:
+                    score += Mathf.RoundToInt(score * 1.6f); 
+                    break;
+                case 5:
+                    score += Mathf.RoundToInt(score * 1.8f); 
+                    break; 
+            }
+        }
+
     }
 }

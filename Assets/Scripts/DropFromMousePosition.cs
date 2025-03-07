@@ -7,7 +7,6 @@ public class DropFromMousePosition : MonoBehaviour
 {
     [SerializeField] private Transform mouseTarget;
     [SerializeField] private BlockSpawner blockSpawner;
-    [SerializeField] private GameManager gameManager;
 
     public bool isHoveringAudioToggle; // Stupid way to do this, but no time to fix. AudioToggle.cs directly interacts with this.
 
@@ -37,7 +36,7 @@ public class DropFromMousePosition : MonoBehaviour
     IEnumerator ReleaseAndSpawnNewBlock()
     {
         // Let block fall and separate it from the mousePosition
-        gameManager.ProgressTurn(); 
+        GameManager.Instance.ProgressTurn(); 
         var block = mouseTarget.GetChild(0);
         block.GetComponent<Rigidbody2D>().simulated = true;
         block.parent = null;
