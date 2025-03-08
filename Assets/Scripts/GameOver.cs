@@ -8,7 +8,6 @@ public class GameOver : MonoBehaviour
 
     private void Start()
     {
-        int turns = FindObjectOfType<AudioManager>().turns;
-        highScoreTurns.text = turns + " turns!"; 
+        highScoreTurns.text = "Final Score: " + GameManager.Instance.score.ToString(); 
     }
 }

@@ -7,10 +7,19 @@ public class MousePosition : MonoBehaviour
 {
     [SerializeField] private Camera _camera;
     [SerializeField] private Transform mouseTarget;
-    [SerializeField] public Transform boundaryLeft;
-    [SerializeField] public Transform boundaryRight;
+    [SerializeField] private Transform boundaryLeft; 
+    [SerializeField] private Transform boundaryRight;
+    [SerializeField] public Transform leftScaleboundaryLeft;
+    [SerializeField] public Transform leftScaleboundaryRight;
+    [SerializeField] public Transform rightScaleboundaryLeft;
+    [SerializeField] public Transform rightScaleboundaryRight;
 
     // Update is called once per frame
+    private void Start()
+    {
+        boundaryLeft = leftScaleboundaryLeft.transform; 
+        boundaryRight = leftScaleboundaryRight.transform;
+    }
     void Update()
     {
         // Position of object to be dropped based off of the player's mouse
@@ -28,5 +37,18 @@ public class MousePosition : MonoBehaviour
         mousePos.z = 0;
 
         mouseTarget.position = mousePos;
+    }
+    public void Swap()
+    {
+        if (boundaryLeft == leftScaleboundaryLeft.transform)
+        {
+            boundaryLeft = rightScaleboundaryLeft.transform; 
+            boundaryRight = rightScaleboundaryRight.transform;
+        }
+        else
+        {
+            boundaryLeft = leftScaleboundaryLeft.transform;
+            boundaryRight = leftScaleboundaryRight.transform;
+        }
     }
 }

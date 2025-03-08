@@ -66,11 +66,8 @@ public class Block : MonoBehaviour
         }
         else if(weight == BlockWeightLevel.Level4)
         {
-            GameManager.Instance.UpdateScore(3); 
-        }
-        else if (weight == BlockWeightLevel.Level5)
-        {
-            GameManager.Instance.UpdateScore(4); 
+            GameManager.Instance.UpdateScore(3);
+            Destroy(this.gameObject); 
         }
         ChangeSprite();
         ChangeWeight();

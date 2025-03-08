@@ -7,6 +7,7 @@ public class DropFromMousePosition : MonoBehaviour
 {
     [SerializeField] private Transform mouseTarget;
     [SerializeField] private BlockSpawner blockSpawner;
+    [SerializeField] private MousePosition mousePosition; 
 
     public bool isHoveringAudioToggle; // Stupid way to do this, but no time to fix. AudioToggle.cs directly interacts with this.
 

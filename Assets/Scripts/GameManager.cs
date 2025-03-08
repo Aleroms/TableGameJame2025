@@ -24,6 +24,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private BlockSpawner blockSpawner;
     [SerializeField] private BlockDetector left_detector;
     [SerializeField] private BlockDetector right_detector;
+    [SerializeField] private MousePosition mousePos; 
     [SerializeField] private int starting_yPos;
     private int previous_weightDiff = 0;
     [SerializeField] public int weightDiff = 0;
@@ -37,7 +38,8 @@ public class GameManager : MonoBehaviour
     private float time_elapsed = 0; // Time spent moving scales
     [SerializeField] private float duration = 50f; //How long it takes for scales to adjust to new position
 
-
+    [SerializeField] public int maxSwapCooldown = 3; 
+    [SerializeField] public int swapCooldown = 0; 
     //Warning and Game Over 
     public bool warning = false;
     [SerializeField] public int penalty = 0;
@@ -64,6 +66,11 @@ public class GameManager : MonoBehaviour
         MoveScale();
         // Get the weightDiff, and if it has changed, set the new scale height destination
         WarningAndGameOver();
+        if (Input.GetKey(KeyCode.S) && swapCooldown == 3)
+        {
+            mousePos.Swap();
+            swapCooldown = 0; 
+        }
     }
 
     void SetNewScaleHeight()
@@ -113,13 +120,18 @@ public class GameManager : MonoBehaviour
     {
         consecutive = 0; 
         turn++;
+        mousePos.Swap(); 
+        if(swapCooldown < maxSwapCooldown)
+        {
+            swapCooldown += 1; 
+        }
         if (merge >= mergeLevelModulator)
         {
             level++;
             merge = 0;
-            mergeLevelModulator += 5; 
-            weightDiffWarningThreshold += 10;
-            weightDiffThreshold = weightDiffWarningThreshold * 2; 
+            mergeLevelModulator += 5;
+            weightDiffThreshold += 10;
+            weightDiffWarningThreshold += 10; 
             Debug.Log("Level increased. Current level: " + level);
         }
     }
@@ -136,44 +148,44 @@ public class GameManager : MonoBehaviour
                 }
             case 2:
                 {
-                    score += 30 * (level + 1);
+                    score += 15 * (level + 1);
                     break;
                 }
             case 3:
                 {
-                    score += 100 * (level + 1);
+                    score += 20 * (level + 1);
                     break;
                 }
             case 4:
                 {
-                    score += 300 * (level + 1);
+                    score += 25 * (level + 1);
                     break;
                 }
             case 5:
                 {
-                    score += 1000 * (level + 1);
+                    score += 30 * (level + 1);
                     break;
                 }
         }
         if(warning)
         {
-            score += Mathf.RoundToInt(score * 1.5f); 
+            score += Mathf.RoundToInt(score * 1.3f); 
         }
         if(consecutive >= 2 && consecutive <= 5)
         {
             switch(consecutive)
             {
                 case 2:
-                    score += Mathf.RoundToInt(score * 1.2f); 
+                    score += Mathf.RoundToInt(score * 1.1f); 
                     break; 
                 case 3:
-                    score += Mathf.RoundToInt(score * 1.4f); 
+                    score += Mathf.RoundToInt(score * 1.2f); 
                     break;
                 case 4:
-                    score += Mathf.RoundToInt(score * 1.6f); 
+                    score += Mathf.RoundToInt(score * 1.3f); 
                     break;
                 case 5:
-                    score += Mathf.RoundToInt(score * 1.8f); 
+                    score += Mathf.RoundToInt(score * 1.4f); 
                     break; 
             }
         }
