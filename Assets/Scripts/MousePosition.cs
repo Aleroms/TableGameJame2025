@@ -13,7 +13,7 @@ public class MousePosition : MonoBehaviour
     [SerializeField] public Transform leftScaleboundaryRight;
     [SerializeField] public Transform rightScaleboundaryLeft;
     [SerializeField] public Transform rightScaleboundaryRight;
-
+    [SerializeField] private LineRenderer lineRenderer; 
     // Update is called once per frame
     private void Start()
     {
@@ -37,18 +37,12 @@ public class MousePosition : MonoBehaviour
         mousePos.z = 0;
 
         mouseTarget.position = mousePos;
-    }
-    public void Swap()
-    {
-        if (boundaryLeft == leftScaleboundaryLeft.transform)
+        Ray ray = new Ray(mousePos, Vector3.down);
+        RaycastHit hit; 
+        if(Physics.Raycast(ray, out hit))
         {
-            boundaryLeft = rightScaleboundaryLeft.transform; 
-            boundaryRight = rightScaleboundaryRight.transform;
-        }
-        else
-        {
-            boundaryLeft = leftScaleboundaryLeft.transform;
-            boundaryRight = leftScaleboundaryRight.transform;
+            lineRenderer.SetPosition(0, mousePos);
+            lineRenderer.SetPosition(1, hit.point); 
         }
     }
 }

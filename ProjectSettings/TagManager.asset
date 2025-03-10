@@ -10,6 +10,7 @@ TagManager:
   - equilateral
   - rightTriangle
   - scale
+  - moon
   layers:
   - Default
   - TransparentFX

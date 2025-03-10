@@ -1,11 +1,12 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 public class Block : MonoBehaviour
 {
     //DONT CHANGE BLOCKTYPE DURING RUNTIME
-    private enum BlockType { TRI, RECT, BRIDGE }
-    private enum BlockWeightLevel { Level1, Level2, Level3, Level4, Level5 }
+    private enum BlockType { EQ, TRI, RECT, BRIDGE, MOON }
+    private enum BlockWeightLevel { Level1, Level2, Level3, Level4 }
 
     // this block's type
     [SerializeField] private BlockType type;
@@ -35,7 +36,7 @@ public class Block : MonoBehaviour
         InitializeBlockWeight();
         InitializeSpriteWeightDict();
         ChangeWeight();
-
+        ChangeScale(); 
 
     }
 
@@ -71,9 +72,26 @@ public class Block : MonoBehaviour
         }
         ChangeSprite();
         ChangeWeight();
+        ChangeScale(); 
 
     }
 
+    private void ChangeScale()
+    {
+        switch(weight)
+        {
+            case BlockWeightLevel.Level1: 
+                break; 
+            case BlockWeightLevel.Level2:
+                this.gameObject.transform.localScale *= 1.2f; 
+                break; 
+            case BlockWeightLevel.Level3:
+                this.gameObject.transform.localScale *= 1.2f; 
+                break; 
+            case BlockWeightLevel.Level4: 
+                break;
+        }
+    }
     private void ChangeSprite()
     {
         //makes it so no index outofbounds
@@ -102,9 +120,6 @@ public class Block : MonoBehaviour
                 case BlockWeightLevel.Level4:
                     BlockWeight = 40;    
                     break; 
-                case BlockWeightLevel.Level5:
-                    BlockWeight = 80; 
-                    break;
             }
         }
         else if(type == BlockType.BRIDGE)
@@ -112,40 +127,70 @@ public class Block : MonoBehaviour
             switch (weight)
             {
                 case BlockWeightLevel.Level1:
-                    BlockWeight = 10;
+                    BlockWeight = 6;
                     break;
                 case BlockWeightLevel.Level2:
-                    BlockWeight = 20;
+                    BlockWeight = 12;
                     break;
                 case BlockWeightLevel.Level3:
-                    BlockWeight = 40;
+                    BlockWeight = 24;
                     break;
                 case BlockWeightLevel.Level4:
-                    BlockWeight = 80;
+                    BlockWeight = 48;
                     break;
-                case BlockWeightLevel.Level5:
-                    BlockWeight = 160;
-                    break; 
             }
         }
-        else
+        else if(type == BlockType.RECT)
         {
             switch (weight)
             {
                 case BlockWeightLevel.Level1:
-                    BlockWeight = 15;
+                    BlockWeight = 7;
                     break;
                 case BlockWeightLevel.Level2:
-                    BlockWeight = 25;
+                    BlockWeight = 14;
                     break;
                 case BlockWeightLevel.Level3:
-                    BlockWeight = 45;
+                    BlockWeight = 28;
                     break;
                 case BlockWeightLevel.Level4:
-                    BlockWeight = 85;
+                    BlockWeight = 56;
                     break;
-                case BlockWeightLevel.Level5:
-                    BlockWeight = 165;
+            }
+        }
+        else if(type == BlockType.EQ)
+        {
+            switch (weight)
+            {
+                case BlockWeightLevel.Level1:
+                    BlockWeight = 4;
+                    break;
+                case BlockWeightLevel.Level2:
+                    BlockWeight = 8;
+                    break;
+                case BlockWeightLevel.Level3:
+                    BlockWeight = 16;
+                    break;
+                case BlockWeightLevel.Level4:
+                    BlockWeight = 32;
+                    break;
+            }
+        }
+        else if(type == BlockType.MOON)
+        {
+            switch (weight)
+            {
+                case BlockWeightLevel.Level1:
+                    BlockWeight = 3;
+                    break;
+                case BlockWeightLevel.Level2:
+                    BlockWeight = 6;
+                    break;
+                case BlockWeightLevel.Level3:
+                    BlockWeight = 12;
+                    break;
+                case BlockWeightLevel.Level4:
+                    BlockWeight = 24;
                     break;
             }
         }

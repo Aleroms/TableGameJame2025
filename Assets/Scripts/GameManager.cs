@@ -28,21 +28,20 @@ public class GameManager : MonoBehaviour
     [SerializeField] private int starting_yPos;
     private int previous_weightDiff = 0;
     [SerializeField] public int weightDiff = 0;
+    public bool leftOrRight = false; //false is left is heavier; true is right is heavier
     [SerializeField] public int weightDiffThreshold = 40; //Threshold for which game over is triggered 
     [SerializeField] public int weightDiffWarningThreshold = 20; //Threshold for which warning will trigger
     private Transform left_scale;
     private Transform right_scale;
-    private float scaleHeightMultiplier = 0.10f; // Used to position y value of scales
+    [SerializeField] private float scaleHeightMultiplier = 0.10f; // Used to position y value of scales
     private float new_left_scale_y;
     private float new_right_scale_y;
     private float time_elapsed = 0; // Time spent moving scales
     [SerializeField] private float duration = 50f; //How long it takes for scales to adjust to new position
-
-    [SerializeField] public int maxSwapCooldown = 3; 
-    [SerializeField] public int swapCooldown = 0; 
     //Warning and Game Over 
     public bool warning = false;
-    [SerializeField] public int penalty = 0;
+    private int gracePeriodTurns = 1;
+    public bool gracePeriod = true; 
     //Turn system
     [SerializeField] public int turn = 1;
     [SerializeField] public int level = 1;
@@ -66,22 +65,25 @@ public class GameManager : MonoBehaviour
         MoveScale();
         // Get the weightDiff, and if it has changed, set the new scale height destination
         WarningAndGameOver();
-        if (Input.GetKey(KeyCode.S) && swapCooldown == 3)
-        {
-            mousePos.Swap();
-            swapCooldown = 0; 
-        }
     }
 
     void SetNewScaleHeight()
     {
-        new_left_scale_y = starting_yPos + (weightDiff * scaleHeightMultiplier);
-        new_right_scale_y = starting_yPos - (weightDiff * scaleHeightMultiplier);
+        new_left_scale_y = starting_yPos - (weightDiff * scaleHeightMultiplier);
+        new_right_scale_y = starting_yPos + (weightDiff * scaleHeightMultiplier);
     }
 
     void MoveScale()
     {
-        weightDiff = (right_detector.currentWeight - left_detector.currentWeight);
+        if(right_detector.currentWeight > left_detector.currentWeight)
+        {
+            leftOrRight = true; 
+        }
+        else
+        {
+            leftOrRight = false; 
+        }
+        weightDiff = Mathf.Abs(right_detector.currentWeight - left_detector.currentWeight);
         if (weightDiff != previous_weightDiff)
         {
             previous_weightDiff = weightDiff;
@@ -99,18 +101,24 @@ public class GameManager : MonoBehaviour
 
     void WarningAndGameOver()
     {
-        if (Mathf.Abs(weightDiff) >= weightDiffWarningThreshold)
+        if (weightDiff >= weightDiffWarningThreshold)
         {
-            warning = true; 
+            warning = true;
+            if (weightDiff >= weightDiffThreshold)
+            {
+                gracePeriod = true; 
+                if(gracePeriodTurns > 1)
+                {
+                    GameOver(); 
+                }
+            }
         }
         else
         {
-            warning = false; 
+            warning = false;
+            gracePeriod = false; 
         }
-        if ((Mathf.Abs(weightDiff) >= weightDiffThreshold) || penalty >= 3)
-        {
-            GameOver();
-        }
+        
     }
     void GameOver()
     {
@@ -120,10 +128,9 @@ public class GameManager : MonoBehaviour
     {
         consecutive = 0; 
         turn++;
-        mousePos.Swap(); 
-        if(swapCooldown < maxSwapCooldown)
+        if(gracePeriod)
         {
-            swapCooldown += 1; 
+            gracePeriodTurns++; 
         }
         if (merge >= mergeLevelModulator)
         {
