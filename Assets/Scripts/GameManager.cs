@@ -48,10 +48,13 @@ public class GameManager : MonoBehaviour
     [SerializeField] public int merge = 0;
     [SerializeField] private int mergeLevelModulator = 10; //Number of merges that would trigger a level increase
     [SerializeField] public int score = 0;
-    [SerializeField] public int consecutive = 0; 
+    [SerializeField] public int consecutive = 0;
+
+    [SerializeField] private float gravityScale = -20.0f; 
     // Start is called before the first frame update
     void Start()
     {
+        Physics.gravity = new Vector3(0, gravityScale, 0);
         blockSpawner.SpawnBlock();
         left_scale = left_detector.gameObject.transform.parent;
         right_scale = right_detector.gameObject.transform.parent;
@@ -62,9 +65,11 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        MoveScale();
+        //MoveScale();
         // Get the weightDiff, and if it has changed, set the new scale height destination
-        WarningAndGameOver();
+        //weightDiff = left_detector.currentWeight; 
+        //WarningAndGameOver();
+
     }
 
     void SetNewScaleHeight()
@@ -101,10 +106,10 @@ public class GameManager : MonoBehaviour
 
     void WarningAndGameOver()
     {
-        if (weightDiff >= weightDiffWarningThreshold)
+        if (left_detector.currentWeight >= weightDiffWarningThreshold)
         {
             warning = true;
-            if (weightDiff >= weightDiffThreshold)
+            if (left_detector.currentWeight >= weightDiffThreshold)
             {
                 gracePeriod = true; 
                 if(gracePeriodTurns > 1)

@@ -31,7 +31,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 8, y: 8, z: 8}
+  m_LocalScale: {x: 14, y: 6, z: 6}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -77,7 +77,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 727a238f7c0206443b87ca492525758a, type: 3}
+  m_Sprite: {fileID: -2069240722, guid: 863567bff76bec4498360668cc8921ca, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -101,7 +101,7 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 5
-  m_LinearDrag: 0
+  m_LinearDrag: 0.5
   m_AngularDrag: 0
   m_GravityScale: 4
   m_Material: {fileID: 0}
@@ -127,15 +127,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe29af8c15dda914d82c0ba98b48aa08, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 2
+  type: 1
   weight: 0
   CanCombine: 1
   BlockSprites:
-  - {fileID: 21300000, guid: 727a238f7c0206443b87ca492525758a, type: 3}
-  - {fileID: 21300000, guid: 8109b59fe7d24d945b0e5abf8b62f2f9, type: 3}
-  - {fileID: 21300000, guid: 322011a5e00793f45ab59c61508257fc, type: 3}
-  - {fileID: 21300000, guid: 3187a11e18419694abc49a176a569367, type: 3}
+  - {fileID: -2069240722, guid: 863567bff76bec4498360668cc8921ca, type: 3}
+  - {fileID: 1220079234, guid: 863567bff76bec4498360668cc8921ca, type: 3}
+  - {fileID: -359162263, guid: 863567bff76bec4498360668cc8921ca, type: 3}
+  - {fileID: 911444535, guid: 863567bff76bec4498360668cc8921ca, type: 3}
   detector: {fileID: 0}
+  minRotation: -180
+  maxRotation: 180
 --- !u!61 &4840005605199614006
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -172,14 +174,14 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 2.7, y: 0.71}
+    oldSize: {x: 1, y: 1}
     newSize: {x: 2.29, y: 1.01}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 2.7, y: 0.71}
+  m_Size: {x: 1.03, y: 1.06}
   m_EdgeRadius: 0
 --- !u!82 &8582970247379463259
 AudioSource:

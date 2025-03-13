@@ -5,7 +5,7 @@ using UnityEngine;
 public class Block : MonoBehaviour
 {
     //DONT CHANGE BLOCKTYPE DURING RUNTIME
-    private enum BlockType { EQ, TRI, RECT, BRIDGE, MOON }
+    private enum BlockType { TRI, RECT, BRIDGE, WEDGE }
     private enum BlockWeightLevel { Level1, Level2, Level3, Level4 }
 
     // this block's type
@@ -28,6 +28,10 @@ public class Block : MonoBehaviour
     private AudioSource audioSource;
     private Collision2D lastHitObject = null;
 
+    //Rigidbody2D for rotation
+    private Rigidbody2D rb;
+    [SerializeField] private float minRotation; 
+    [SerializeField] private float maxRotation;
     private void Start()
     {
         spriteByWeight = new Dictionary<BlockWeightLevel, Sprite>();
@@ -37,7 +41,6 @@ public class Block : MonoBehaviour
         InitializeSpriteWeightDict();
         ChangeWeight();
         ChangeScale(); 
-
     }
 
     private void InitializeBlockWeight()
@@ -55,24 +58,24 @@ public class Block : MonoBehaviour
     private void CombineBlocks()
     {
         weight++;
-        //GameManager.Instance.merge++;
-        //GameManager.Instance.consecutive++; 
-        if(weight == BlockWeightLevel.Level2)
+        GameManager.Instance.merge++;
+        GameManager.Instance.consecutive++; 
+        if (weight == BlockWeightLevel.Level2)
         {
-            //GameManager.Instance.UpdateScore(1); 
+            GameManager.Instance.UpdateScore(1); 
         }
-        else if(weight == BlockWeightLevel.Level3)
+        else if (weight == BlockWeightLevel.Level3)
         {
-            //GameManager.Instance.UpdateScore(2); 
+            GameManager.Instance.UpdateScore(2); 
         }
-        else if(weight == BlockWeightLevel.Level4)
+        else if (weight == BlockWeightLevel.Level4)
         {
-            //GameManager.Instance.UpdateScore(3);
+            GameManager.Instance.UpdateScore(3);
             Destroy(this.gameObject); 
         }
         ChangeSprite();
         ChangeWeight();
-        ChangeScale(); 
+        ChangeScale();
 
     }
 
@@ -86,9 +89,10 @@ public class Block : MonoBehaviour
                 this.gameObject.transform.localScale *= 1.2f; 
                 break; 
             case BlockWeightLevel.Level3:
-                this.gameObject.transform.localScale *= 1.2f; 
+                this.gameObject.transform.localScale *= 1.35f; 
                 break; 
-            case BlockWeightLevel.Level4: 
+            case BlockWeightLevel.Level4:
+                this.gameObject.transform.localScale *= 1.5f; 
                 break;
         }
     }
@@ -104,22 +108,23 @@ public class Block : MonoBehaviour
     private void ChangeWeight()
     {
         //Changes individual weight based on current weight level value & sprite shape. 
+        int oldWeight = BlockWeight; 
         if (type == BlockType.TRI)
         {
             switch (weight)
             {
                 case BlockWeightLevel.Level1:
-                    BlockWeight = 5;
+                    BlockWeight = 4;
                     break;
                 case BlockWeightLevel.Level2:
-                    BlockWeight = 10; 
+                    BlockWeight = 6;
                     break;
                 case BlockWeightLevel.Level3:
-                    BlockWeight = 20; 
+                    BlockWeight = 10;
                     break;
                 case BlockWeightLevel.Level4:
-                    BlockWeight = 40;    
-                    break; 
+                    BlockWeight = 18;
+                    break;
             }
         }
         else if(type == BlockType.BRIDGE)
@@ -130,13 +135,13 @@ public class Block : MonoBehaviour
                     BlockWeight = 6;
                     break;
                 case BlockWeightLevel.Level2:
-                    BlockWeight = 12;
+                    BlockWeight = 10;
                     break;
                 case BlockWeightLevel.Level3:
-                    BlockWeight = 24;
+                    BlockWeight = 18;
                     break;
                 case BlockWeightLevel.Level4:
-                    BlockWeight = 48;
+                    BlockWeight = 34;
                     break;
             }
         }
@@ -148,56 +153,39 @@ public class Block : MonoBehaviour
                     BlockWeight = 7;
                     break;
                 case BlockWeightLevel.Level2:
-                    BlockWeight = 14;
+                    BlockWeight = 12;
                     break;
                 case BlockWeightLevel.Level3:
-                    BlockWeight = 28;
+                    BlockWeight = 22;
                     break;
                 case BlockWeightLevel.Level4:
-                    BlockWeight = 56;
+                    BlockWeight = 42;
                     break;
             }
         }
-        else if(type == BlockType.EQ)
+        else if(type == BlockType.WEDGE)
         {
             switch (weight)
             {
                 case BlockWeightLevel.Level1:
-                    BlockWeight = 4;
+                    BlockWeight = 5;
                     break;
                 case BlockWeightLevel.Level2:
                     BlockWeight = 8;
                     break;
                 case BlockWeightLevel.Level3:
-                    BlockWeight = 16;
+                    BlockWeight = 14;
                     break;
                 case BlockWeightLevel.Level4:
-                    BlockWeight = 32;
+                    BlockWeight = 26;
                     break;
             }
         }
-        else if(type == BlockType.MOON)
-        {
-            switch (weight)
-            {
-                case BlockWeightLevel.Level1:
-                    BlockWeight = 3;
-                    break;
-                case BlockWeightLevel.Level2:
-                    BlockWeight = 6;
-                    break;
-                case BlockWeightLevel.Level3:
-                    BlockWeight = 12;
-                    break;
-                case BlockWeightLevel.Level4:
-                    BlockWeight = 24;
-                    break;
-            }
-        }
+
         ChangeSprite();
         if (detector != null)
         {
-            detector.UpdateWeight(BlockWeight / 2, BlockWeight);
+            detector.UpdateWeight(oldWeight, BlockWeight);
         }
     }
 
@@ -212,17 +200,16 @@ public class Block : MonoBehaviour
                 StartCoroutine(AudioTimer());
             }
         }
-        
         // Hitting another block
         var otherBlockScript = other.gameObject.GetComponent<Block>();
-        if (otherBlockScript != null && CanCombine && NewGameManager.Instance.mergeActive)
+        if (otherBlockScript != null && CanCombine)
         {
             otherBlockScript.CanCombine = false;
             var otherWeight = otherBlockScript.weight;
             var otherType = otherBlockScript.type;
 
             // combine if other is same block type and weight
-            if (type == otherType && weight == otherWeight && NewGameManager.Instance.mergeActive)
+            if (type == otherType && weight == otherWeight)
             {
                 CombineBlocks();
                 Destroy(other.gameObject);
