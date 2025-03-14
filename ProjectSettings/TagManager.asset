@@ -11,6 +11,7 @@ TagManager:
   - rightTriangle
   - scale
   - moon
+  - finish
   layers:
   - Default
   - TransparentFX

@@ -136,8 +136,8 @@ MonoBehaviour:
   - {fileID: -525409956, guid: 174c7e0d42c66e046aa2f54653aa8c88, type: 3}
   - {fileID: 1478120177, guid: 174c7e0d42c66e046aa2f54653aa8c88, type: 3}
   detector: {fileID: 0}
-  minRotation: -180
-  maxRotation: 180
+  floatingText: {fileID: 1498048462047499085, guid: 97b3ee019fbbf2840812ba4659ba1c45, type: 3}
+  floatTime: 0.75
 --- !u!60 &8708885085152693179
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -182,13 +182,14 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: 0.21504629, y: 0.35808203}
-      - {x: -0.00067653647, y: 0.07754202}
+    - - {x: 0.42287937, y: 0.52468354}
+      - {x: 0.21504629, y: 0.35808203}
+      - {x: -0.004466367, y: 0.10280759}
       - {x: -0.21092066, y: 0.33257055}
-      - {x: -0.5, y: 0.5}
-      - {x: -0.5, y: -0.5}
-      - {x: 0.5, y: -0.5}
-      - {x: 0.5, y: 0.5}
+      - {x: -0.5151593, y: 0.564743}
+      - {x: -0.51610696, y: -0.5300029}
+      - {x: 0.52084404, y: -0.5268447}
+      - {x: 0.5208442, y: 0.5521104}
   m_UseDelaunayMesh: 0
 --- !u!82 &1059479297803202715
 AudioSource:

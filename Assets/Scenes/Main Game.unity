@@ -677,9 +677,10 @@ GameObject:
   m_Component:
   - component: {fileID: 1347201861}
   - component: {fileID: 1347201860}
+  - component: {fileID: 1347201862}
   m_Layer: 0
   m_Name: End Game Trigger
-  m_TagString: Untagged
+  m_TagString: finish
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -713,10 +714,10 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -11.598494, y: 0}
+  m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -727,7 +728,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 24.196987, y: 1}
+  m_Size: {x: 100, y: 1}
   m_EdgeRadius: 0
 --- !u!4 &1347201861
 Transform:
@@ -738,12 +739,25 @@ Transform:
   m_GameObject: {fileID: 1347201859}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 13.213671, y: 0, z: 0.53104746}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1347201862
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1347201859}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a293779c30499c047b0fed453c3e3195, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TooTall: 0
 --- !u!1 &1354296318
 GameObject:
   m_ObjectHideFlags: 0
@@ -812,7 +826,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _camera: {fileID: 625704219}
   mouseTarget: {fileID: 1354296320}
-  startingY: 0
+  startingY: 30
   boundaryLeft: {fileID: 1276353959}
   boundaryRight: {fileID: 1980121092}
   lineRenderer: {fileID: 1354296324}
@@ -1512,18 +1526,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   blockSpawner: {fileID: 1354296321}
-  left_detector: {fileID: 1792543098}
-  right_detector: {fileID: 0}
-  mousePos: {fileID: 1354296322}
-  starting_yPos: 0
-  weightDiff: 0
-  leftOrRight: 0
-  weightDiffThreshold: 50
-  weightDiffWarningThreshold: 30
-  scaleHeightMultiplier: 0.4
-  duration: 50
-  warning: 0
-  gracePeriod: 1
   turn: 1
   level: 1
   merge: 0

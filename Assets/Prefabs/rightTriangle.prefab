@@ -136,8 +136,8 @@ MonoBehaviour:
   - {fileID: 1684685338, guid: 5bc36d8b422cfb64db01554292abd1ea, type: 3}
   - {fileID: -609373477, guid: 5bc36d8b422cfb64db01554292abd1ea, type: 3}
   detector: {fileID: 0}
-  minRotation: -180
-  maxRotation: 180
+  floatingText: {fileID: 1498048462047499085, guid: 97b3ee019fbbf2840812ba4659ba1c45, type: 3}
+  floatTime: 0.75
 --- !u!60 &8682238997664147539
 PolygonCollider2D:
   m_ObjectHideFlags: 0

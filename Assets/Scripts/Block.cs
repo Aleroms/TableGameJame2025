@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
+using TMPro; 
 public class Block : MonoBehaviour
 {
     //DONT CHANGE BLOCKTYPE DURING RUNTIME
@@ -28,10 +30,10 @@ public class Block : MonoBehaviour
     private AudioSource audioSource;
     private Collision2D lastHitObject = null;
 
-    //Rigidbody2D for rotation
-    private Rigidbody2D rb;
-    [SerializeField] private float minRotation; 
-    [SerializeField] private float maxRotation;
+
+    //Floating score text
+    [SerializeField] private GameObject floatingText;
+    [SerializeField] private float floatTime; 
     private void Start()
     {
         spriteByWeight = new Dictionary<BlockWeightLevel, Sprite>();
@@ -57,28 +59,40 @@ public class Block : MonoBehaviour
     }
     private void CombineBlocks()
     {
+        int localScore = 0; 
         weight++;
         GameManager.Instance.merge++;
         GameManager.Instance.consecutive++; 
         if (weight == BlockWeightLevel.Level2)
         {
-            GameManager.Instance.UpdateScore(1); 
+            localScore = GameManager.Instance.UpdateScore(1); 
         }
         else if (weight == BlockWeightLevel.Level3)
         {
-            GameManager.Instance.UpdateScore(2); 
+            localScore = GameManager.Instance.UpdateScore(2); 
         }
         else if (weight == BlockWeightLevel.Level4)
         {
-            GameManager.Instance.UpdateScore(3);
+            localScore =GameManager.Instance.UpdateScore(3);
             Destroy(this.gameObject); 
         }
         ChangeSprite();
         ChangeWeight();
         ChangeScale();
-
+        ShowFloatingText(localScore);
     }
-
+    private void ShowFloatingText(int score)
+    {
+        GameObject floatingTextInstance = Instantiate(floatingText, transform.position, Quaternion.identity);
+        TextMeshProUGUI textField = floatingTextInstance.GetComponentInChildren<TextMeshProUGUI>();
+        if (textField != null)
+        {
+            textField.text = score.ToString() + "!"; 
+        }
+        floatingTextInstance.transform.DOMoveY(0.01f, floatTime); //Tween up
+        textField.DOFade(50, floatTime); 
+        Destroy(floatingTextInstance, floatTime); 
+    }
     private void ChangeScale()
     {
         switch(weight)

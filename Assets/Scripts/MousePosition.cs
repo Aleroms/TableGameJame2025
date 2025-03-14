@@ -35,11 +35,14 @@ public class MousePosition : MonoBehaviour
 
         mouseTarget.position = mousePos;
         Ray ray = new Ray(mousePos, Vector2.down);
-        RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction); 
-        if(hit)
+        RaycastHit2D[] hits = Physics2D.RaycastAll(ray.origin, ray.direction); 
+        foreach(RaycastHit2D hit in hits)
         {
-            lineRenderer.SetPosition(0, mousePos);
-            lineRenderer.SetPosition(1, hit.point); 
+            if (hit && hit.transform.tag != "finish")
+            {
+                lineRenderer.SetPosition(0, mousePos);
+                lineRenderer.SetPosition(1, hit.point);
+            }
         }
     }
 }

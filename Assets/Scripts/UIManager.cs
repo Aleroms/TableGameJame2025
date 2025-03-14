@@ -14,5 +14,4 @@ public class UIManager : MonoBehaviour
         scoreText.text = "Score: " + GameManager.Instance.score.ToString();
         
     }
-
 }
